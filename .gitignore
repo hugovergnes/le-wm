@@ -1,0 +1,7 @@
+# python
+__pycache__/
+*.pyc
+
+# hydra run dirs (config sets chdir: true)
+outputs/
+multirun/
