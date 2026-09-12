@@ -42,4 +42,5 @@ eval:
           value: goal_proprio
 
 output:
+  dir: null  # [local] override to write results+videos into the project tree
   filename: tworoom_results.txt

@@ -43,4 +43,5 @@ eval:
           value: goal_state
           
 output:
+  dir: null  # [local] override to write results+videos into the project tree
   filename: pusht_results.txt

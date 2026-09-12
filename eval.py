@@ -99,11 +99,16 @@ def run(cfg: DictConfig):
     else:
         policy = swm.policy.RandomPolicy()
 
-    results_path = (
-        Path(swm.data.utils.get_cache_dir(), cfg.policy).parent
-        if cfg.policy != "random"
-        else Path(__file__).parent
-    )
+    # [local] allow an explicit output dir so results/videos can land in the project
+    # tree instead of $STABLEWM_HOME. Set `output.dir=...`; unset keeps upstream behaviour.
+    if cfg.output.get("dir"):
+        results_path = Path(cfg.output.dir)
+    else:
+        results_path = (
+            Path(swm.data.utils.get_cache_dir(), cfg.policy).parent
+            if cfg.policy != "random"
+            else Path(__file__).parent
+        )
 
     # sample the episodes and the starting indices
     episode_len = get_episodes_length(dataset, ep_indices)
