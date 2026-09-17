@@ -85,7 +85,16 @@ def run(cfg: DictConfig):
     policy = cfg.get("policy", "random")
 
     if policy != "random":
-        model = swm.wm.utils.load_pretrained(cfg.policy)
+        # [local] The HF mirror ships `weights.pt` + `config.json`, which is what
+        # load_pretrained expects. The Drive archive of baseline checkpoints instead
+        # ships `<name>_object.ckpt` (a pickled module), which only AutoCostModel
+        # resolves. Try the former, fall back to the latter, so released baselines can
+        # be evaluated without conversion.
+        try:
+            model = swm.wm.utils.load_pretrained(cfg.policy)
+        except (FileNotFoundError, ValueError) as err:
+            print(f"load_pretrained failed ({err}); trying AutoCostModel")
+            model = swm.policy.AutoCostModel(cfg.policy)
         model = model.to("cuda")
         model = model.eval()
         model.requires_grad_(False)

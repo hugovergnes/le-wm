@@ -5,3 +5,8 @@ __pycache__/
 # hydra run dirs (config sets chdir: true)
 outputs/
 multirun/
+
+# eval artifacts — eval.py writes rollout videos and results beside the script
+# when `policy=random` (results_path falls back to Path(__file__).parent)
+*.mp4
+*_results.txt
