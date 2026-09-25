@@ -162,7 +162,11 @@ def run(cfg: DictConfig):
         eval_budget=cfg.eval.eval_budget,
         episodes_idx=eval_episodes.tolist(),
         callables=OmegaConf.to_container(cfg.eval.get("callables"), resolve=True),
-        video=results_path,
+        # [local] one mp4 per episode is written by ffmpeg on the CPU, which at
+        # large num_eval is real time spent for videos nobody looks at (the n=50
+        # runs already have them for failure analysis). `output.video=false`
+        # skips it; World.evaluate takes video=None.
+        video=results_path if cfg.output.get("video", True) else None,
     )
     end_time = time.time()
     

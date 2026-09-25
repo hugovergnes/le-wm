@@ -44,4 +44,6 @@ eval:
           
 output:
   dir: null  # [local] override to write results+videos into the project tree
+  video: true  # [local] false skips per-episode mp4s — ffmpeg is CPU-bound and
+               # dominates wall time at large num_eval
   filename: pusht_results.txt
